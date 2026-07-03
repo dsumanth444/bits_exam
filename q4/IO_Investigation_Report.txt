@@ -1,0 +1,50 @@
+Question 4 - File Access and I/O Investigation Report
+====================================================
+Date: 2026-07-03
+
+1) Open file and descriptor inspection
+Command: echo "sample log line" > app.log
+Output: (no output)
+Explanation: I created the sample log file that would be used for file descriptor testing.
+
+Command: exec 3<app.log
+Output: (no output)
+Explanation: I opened the file and assigned it to file descriptor 3, showing how the shell tracks open files.
+
+Command: lsof -p $$ | grep app.log
+Output:
+bash    19820 codespace    3r   REG    7,4       16 1310807 /workspaces/bits_exam/q4/app.log
+Explanation: I inspected the current shell’s open files and confirmed that app.log was open via descriptor 3.
+
+Command: ls -l /proc/$$/fd | grep app.log
+Output:
+lr-x------ 1 codespace codespace 64 Jul  3 17:02 3 -> /workspaces/bits_exam/q4/app.log
+Explanation: I verified the same file descriptor through the proc filesystem and confirmed its target path.
+
+2) Output and error redirection
+Command: ls -l > stdout.txt
+Output: (no output)
+Explanation: I redirected standard output to a file so normal command output would be captured separately.
+
+Command: ls /not_a_real_path 2> stderr.txt
+Output:
+ls: cannot access '/not_a_real_path': No such file or directory
+Explanation: I redirected the error stream to a file and confirmed that stderr was captured independently from stdout.
+
+Command: (ls -l && ls /not_a_real_path) > combined.txt 2>&1
+Output: (no output)
+Explanation: I combined standard output and standard error into one file to observe how shell redirection works in practice.
+
+3) Resource limits
+Command: ulimit -a
+Output:
+core file size              (blocks, -c) unlimited
+file size                   (blocks, -f) unlimited
+open files                          (-n) 524288
+stack size                  (kbytes, -s) 8192
+cpu time                   (seconds, -t) unlimited
+Explanation: I checked the shell limits and confirmed the environment allows a very high number of open files and other process resources.
+
+Conclusion
+----------
+Linux manages file I/O through file descriptors, with stdin, stdout, stderr, and additional descriptors tracked by the shell and kernel. Redirecting output streams allows logs and errors to be captured separately or combined for troubleshooting.

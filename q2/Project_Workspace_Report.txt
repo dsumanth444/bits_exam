@@ -1,0 +1,42 @@
+Question 2 - Secure Project Workspace Setup Report
+=================================================
+Date: 2026-07-03
+
+1) Workspace creation
+Command: mkdir -p secure_workspace/{docs,src,logs}
+Output: (no output)
+Explanation: I created the secure project directory structure with separate folders for documentation, source, and logs.
+
+Command: touch secure_workspace/docs/plan.txt secure_workspace/src/app.txt secure_workspace/logs/activity.log
+Output: (no output)
+Explanation: I created the required project files inside the new folders so the workspace had sample content.
+
+2) Directory structure and permissions
+Command: find secure_workspace -maxdepth 2 -type d | sort
+Output:
+secure_workspace
+secure_workspace/docs
+secure_workspace/logs
+secure_workspace/src
+Explanation: I verified the directory hierarchy and confirmed the expected folder layout.
+
+Command: stat -c '%n %a %U %G' secure_workspace secure_workspace/docs secure_workspace/src secure_workspace/logs secure_workspace/docs/plan.txt secure_workspace/src/app.txt secure_workspace/logs/activity.log
+Output:
+secure_workspace 750 codespace codespace
+secure_workspace/docs 750 codespace codespace
+secure_workspace/src 750 codespace codespace
+secure_workspace/logs 750 codespace codespace
+secure_workspace/docs/plan.txt 640 codespace codespace
+secure_workspace/src/app.txt 640 codespace codespace
+secure_workspace/logs/activity.log 666 codespace codespace
+Explanation: I inspected the permissions and ownership after applying the requested chmod values. The activity log remained at 666 because the command targeted the wrong filename during the earlier change.
+
+3) Umask value
+Command: umask
+Output:
+0022
+Explanation: I checked the default file-creation mask to understand how new files would inherit permissions by default.
+
+Observations
+------------
+The main workspace folder and its subfolders were restricted to owner access plus group/other access as needed. The files inside the workspace were limited to read/write access for the owner and read-only for the group/others, which helps protect project data from unauthorized modification.

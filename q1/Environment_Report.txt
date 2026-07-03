@@ -1,0 +1,46 @@
+Question 1 - Environment Verification Report
+========================================
+Date: 2026-07-03
+
+1) Username and groups
+Command: whoami
+Output:
+codespace
+Explanation: I verified the active user account to confirm the login identity in the lab environment.
+
+Command: groups
+Output:
+codespace pipx python oryx golang docker sdkman rvm php conda nvs nvm hugo ssh
+Explanation: I listed the groups attached to the current account to confirm the user’s permissions and membership.
+
+2) Current shell and working directory
+Command: echo "$SHELL"
+Output:
+/bin/bash
+Explanation: I checked the default shell to confirm the command interpreter being used.
+
+Command: pwd
+Output:
+/workspaces/bits_exam
+Explanation: I verified the current working directory so the session context was clear.
+
+3) Workspace contents and network access
+Command: ls -ls
+Output:
+total 24
+4 -rw-rw-rw-  1 codespace root        11 Jul  3 16:34 README.md
+4 drwxrwxrwx+ 2 codespace codespace 4096 Jul  3 16:35 q1
+4 drwxrwxrwx+ 3 codespace codespace 4096 Jul  3 16:41 q2
+4 drwxrwxrwx+ 2 codespace codespace 4096 Jul  3 16:45 q3
+4 drwxrwxrwx+ 2 codespace codespace 4096 Jul  3 16:48 q4
+4 drwxrwxrwx+ 2 codespace codespace 4096 Jul  3 16:35 q5
+Explanation: I listed the repository contents so the working area and its structure were visible.
+
+Command: curl -s --max-time 10 https://youtube.com > /dev/null && echo "Network: youtube.com reachable"
+Output:
+Network: youtube.com reachable
+Explanation: I tested outbound network access and confirmed that the environment could reach the target website.
+
+Summary
+-------
+The environment is running under the codespace user with a Bash shell in the repository directory. The workspace contains the expected q1-q5 folders and internet connectivity is available.

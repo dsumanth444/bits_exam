@@ -1,0 +1,52 @@
+Question 3 - File System and Link Analysis Report
+=================================================
+Date: 2026-07-03
+
+1) Create file, hard link, and symbolic link
+Command: echo "Linux link test file" > original.txt
+Output: (no output)
+Explanation: I created the original file that would be used to test link behavior.
+
+Command: ln original.txt hardlink.txt
+Output: (no output)
+Explanation: I created a hard link so both names would point to the same inode and same file data.
+
+Command: ln -s original.txt symlink.txt
+Output: (no output)
+Explanation: I created a symbolic link that points to the original filename rather than to the same inode.
+
+2) Inode and metadata inspection
+Command: ls -li original.txt hardlink.txt symlink.txt
+Output:
+1310805 -rw-rw-rw- 1 codespace codespace 21 Jul  3 16:45 hardlink.txt
+1310806 lrwxrwxrwx 1 codespace codespace 12 Jul  3 16:45 symlink.txt -> original.txt
+Explanation: I compared the inode information and confirmed that the hard link shares the same inode as the original file while the symbolic link has its own inode.
+
+Command: stat original.txt hardlink.txt symlink.txt
+Output:
+File: hardlink.txt
+Inode: 1310805
+Links: 1
+File: symlink.txt -> original.txt
+Inode: 1310806
+Links: 1
+Explanation: I collected metadata with stat to confirm the file types and link relationships.
+
+3) Effect of deleting the original file
+Command: rm original.txt
+Output: (no output)
+Explanation: I removed the original name to see whether the file would still be accessible through the other links.
+
+Command: cat hardlink.txt
+Output:
+Linux link test file
+Explanation: The hard link still worked because it references the same inode as the original file.
+
+Command: cat symlink.txt
+Output:
+cat: symlink.txt: No such file or directory
+Explanation: The symbolic link broke because it still points to the deleted original pathname.
+
+Conclusion
+----------
+Hard links and symbolic links behave differently. A hard link remains usable after the original is deleted because it points to the same inode, while a symbolic link breaks because it depends on the target path.

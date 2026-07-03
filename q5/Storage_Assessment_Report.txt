@@ -1,0 +1,41 @@
+Question 5 - Storage Assessment Report
+=====================================
+Date: 2026-07-03
+
+1) Block devices and mounted filesystems
+Command: lsblk
+Output:
+NAME    MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+sda       8:0    0   30G  0 disk
+sdb       8:16   0   45G  0 disk
+sdc       8:32   0   512G  0 disk
+Explanation: I listed the available block devices to see what storage media were present in the environment.
+
+Command: mount | head -10
+Output:
+overlay on / type overlay (rw,relatime,...)
+proc on /proc type proc (rw,nosuid,nodev,noexec,relatime)
+tmpfs on /dev type tmpfs (rw,nosuid,size=65536k,mode=755,inode64)
+devpts on /dev/pts type devpts (rw,nosuid,noexec,relatime,gid=5,mode=620,ptmxmode=666)
+Explanation: I inspected the mounted filesystems to understand which storage layers were active.
+
+2) Disk and inode usage
+Command: df -h
+Output:
+Filesystem      Size  Used Avail Use%
+overlay          32G  9.6G   21G  33%
+/dev/root        29G   24G  5.7G  81%
+/dev/sdb1        44G  2.2G   40G   6% /tmp
+Explanation: I reviewed disk usage to see how much storage capacity remained available.
+
+Command: df -i
+Output:
+Filesystem      Inodes  IUsed   IFree IUse%
+overlay        2097152 203042 1894110   10%
+/dev/root      3870720 243379 3627341    7%
+/dev/sdb1      2949120     34 2949086    1%
+Explanation: I checked inode utilization to ensure the system was not near inode exhaustion.
+
+Observations and recommendations
+--------------------------------
+The environment currently has plenty of free disk space and inode capacity for normal operations. The main storage pressure is on the root filesystem, so keeping logs and temporary data organized will help maintain performance. Recommended actions include rotating logs, cleaning temporary files, and monitoring disk usage over time.
